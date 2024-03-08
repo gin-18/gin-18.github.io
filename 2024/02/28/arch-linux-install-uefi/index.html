@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    GIN
+  </title>
+  
+<link rel="stylesheet" href="/css/common.c8cf2b51b064b4d7b999.css">
+<link rel="stylesheet" href="/css/vendors.9b3ef06cd1c3624bd43e.css">
+
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body class="flex flex-col h-full text-text bg-base">
+    <!-- 头部 -->
+    <header class="flex justify-between items-center p-6 text-text">
+  <!-- logo -->
+  <a class="text-4xl font-['DubtronicInline'] text-animation"
+  href="/">
+  GIN
+</a>
+
+    <!-- 导航栏 -->
+    <nav class="flex items-center gap-x-6 text-overlay1">
+  
+    
+      <a class="flex justify-center items-center hover:text-text" href="/archives/"
+        title="Posts">
+        <span class="text-lg icon-[charm--notes] md:hidden"></span>
+        
+          <span class="hidden md:inline-block">
+            Posts
+          </span>
+          
+      </a>
+      
+        
+    
+      <a class="flex justify-center items-center hover:text-text" target="_blank" rel="noopener" href="https://github.com/GIN-18"
+        title="Github">
+        <span class="text-lg icon-[charm--github] md:inline-block"></span>
+        
+      </a>
+      
+        
+
+          <button id="mode-icon" class="text-lg transition duration-200 ease-in hover:text-text" title="dark / light"
+  data-palette="mocha"></button>
+            
+  <button id="search-btn" class="text-lg transition duration-200 ease-in icon-[charm--search] hover:text-text"
+    title="search"></button>
+
+  <div id="search-box"
+    class="z-10 hidden flex-col absolute top-0 left-0 w-full h-full p-3 bg-mantle md:fixed md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-1/2 md:h-3/4 md:border-2 md:border-surface2 md:rounded">
+    <div class="flex justify-center items-center gap-2 w-full bg-inherit">
+      <!-- 输入框 -->
+      <div class="relative w-full bg-inherit">
+        <input type="text" id="search-input"
+          class="peer bg-transparent w-full p-2 rounded text-subtext0 placeholder-transparent ring-2 ring-surface2 focus:ring-blue focus:outline-none focus:border-blue"
+          placeholder="Search" />
+        <label for="search-input"
+          class="absolute cursor-text left-0 -top-3 text-sm text-surface2 bg-inherit mx-1 px-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-surface2 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-blue peer-focus:text-sm transition-all">
+          Search
+        </label>
+      </div>
+
+      <!-- 关闭按钮 -->
+      <button id="search-close"
+        class="flex justify-center items-center p-3 border-2 border-surface2 rounded bg-inherit transition duration-200 ease-in hover:border-text hover:text-text">
+        <span class="icon-[charm--cross]"></span>
+      </button>
+    </div>
+
+    <!-- 搜索结果 -->
+    <ul id="search-result" class="flex flex-col gap-2 mt-2 border-inherit"></ul>
+  </div>
+  
+</nav>
+</header>
+
+      <main class="grow px-6 md:flex md:justify-center">
+        <article class="prose">
+  <div>
+    <h1>
+      UEFI 下安装 Arch Linux
+    </h1>
+  </div>
+  <div class="my-2 text-overlay1 text-sm">
+    <span>Feb 28</span>
+    <span>,</span>
+    <span>2024</span>
+  </div>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%81%E7%94%A8%E5%AE%89%E5%85%A8%E5%90%AF%E5%8A%A8"><span class="toc-text">禁用安全启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E5%BC%95%E5%AF%BC%E6%A8%A1%E5%BC%8F"><span class="toc-text">验证引导模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E4%BA%92%E8%81%94%E7%BD%91"><span class="toc-text">连接互联网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5-wifi"><span class="toc-text">连接 wifi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5"><span class="toc-text">检查网络连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F"><span class="toc-text">更新系统时钟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA"><span class="toc-text">磁盘分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%A4%BA%E5%88%97"><span class="toc-text">分区示列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%88%86%E5%8C%BA"><span class="toc-text">格式化分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%82%E8%BD%BD%E5%88%86%E5%8C%BA"><span class="toc-text">挂载分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%95%9C%E5%83%8F%E5%88%97%E8%A1%A8"><span class="toc-text">修改镜像列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="toc-text">安装系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F"><span class="toc-text">进入系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-text">进入系统后的设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%97%B6%E5%8C%BA"><span class="toc-text">修改时区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4"><span class="toc-text">同步系统时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%8C%96%E8%AE%BE%E7%BD%AE"><span class="toc-text">本地化设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-text">网络设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99root%E7%94%A8%E6%88%B7%E6%B7%BB%E5%8A%A0%E5%AF%86%E7%A0%81"><span class="toc-text">给root用户添加密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85dhcpcd%E5%92%8Ciwd"><span class="toc-text">安装dhcpcd和iwd</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85grub%E5%BC%95%E5%AF%BC"><span class="toc-text">安装grub引导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%80%E5%87%BA%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%8F%96%E6%B6%88%E6%8C%82%E8%BD%BD%E5%B9%B6%E9%87%8D%E5%90%AF%E7%B3%BB%E7%BB%9F"><span class="toc-text">退出系统，取消挂载并重启系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%90%AF%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-text">重启进入系统后的设置</span></a></li></ol>
+  <div class="articleLink">
+    <h2 id="禁用安全启动"><a href="#禁用安全启动" class="headerlink" title="禁用安全启动"></a>禁用安全启动</h2><hr>
+<p><code>Arch Linux</code> 安装镜像不支持 <code>安全启动（Secure Boot）</code>。要引导安装介质，需要禁用安全启动。</p>
+<h2 id="验证引导模式"><a href="#验证引导模式" class="headerlink" title="验证引导模式"></a>验证引导模式</h2><hr>
+<p>要验证引导模式，可以使用下列命令行出 <code>efivars</code> 目录：</p>
+<pre><code class="sh">ls /sys/firmware/efi/efivars
+</code></pre>
+<p>如果命令结果显示了目录且没有报告错误，则系统以 <code>UEFI</code> 模式引导。 如果目录不存在，则系统可能以 <code>BIOS</code> 模式引导。</p>
+<h2 id="连接互联网"><a href="#连接互联网" class="headerlink" title="连接互联网"></a>连接互联网</h2><hr>
+<p>安装 <code>Arch Linux</code> 必须连通网络。</p>
+<p>可以插入 <code>网线</code> 或使用 <code>wifi</code>。</p>
+<h3 id="连接-wifi"><a href="#连接-wifi" class="headerlink" title="连接 wifi"></a>连接 wifi</h3><hr>
+<p>使用 <code>iwd</code> 连接 <code>wifi</code>。</p>
+<pre><code class="sh"># 进入iwd交互界面
+iwctl
+
+# 查看设备名
+device list
+
+# 扫描网络
+station &lt;设备名&gt; scan
+
+# 查看网络名称
+station &lt;设备名&gt; get-networks
+
+# 连接网络
+station &lt;设备名&gt; connect &lt;网络名称&gt;
+</code></pre>
+<h3 id="检查网络连接"><a href="#检查网络连接" class="headerlink" title="检查网络连接"></a>检查网络连接</h3><hr>
+<pre><code class="sh">ping archlinux.org
+</code></pre>
+<h2 id="更新系统时钟"><a href="#更新系统时钟" class="headerlink" title="更新系统时钟"></a>更新系统时钟</h2><hr>
+<pre><code class="sh">timedatectl status
+</code></pre>
+<h2 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h2><hr>
+<p>可以使用 <code>fdisk</code> 命令进行磁盘分区，也可以使用 <code>cfdisk</code> 命令进行磁盘分区。</p>
+<p><code>cfdisk</code> 命令拥有交互界面。</p>
+<pre><code class="sh">cfdisk
+</code></pre>
+<h3 id="分区示列"><a href="#分区示列" class="headerlink" title="分区示列"></a>分区示列</h3><hr>
+<table>
+<thead>
+<tr>
+<th>挂载点</th>
+<th>分区类型</th>
+<th>建议大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;mnt&#x2F;boot</td>
+<td>EFT系统分区</td>
+<td>至少300Mib</td>
+</tr>
+<tr>
+<td>[SWAP]</td>
+<td>Linux swap</td>
+<td>大于512Mib</td>
+</tr>
+<tr>
+<td>&#x2F;mnt</td>
+<td>Linux x86-64根目录(&#x2F;)</td>
+<td>剩余空间</td>
+</tr>
+</tbody></table>
+<h2 id="格式化分区"><a href="#格式化分区" class="headerlink" title="格式化分区"></a>格式化分区</h2><hr>
+<p>查看分区设备名。</p>
+<pre><code class="sh">fdisk -l
+</code></pre>
+<p>格式化 <code>boot分区</code>。</p>
+<pre><code class="sh">mkfs.fat -F 32 &lt;boot分区设备名&gt;
+</code></pre>
+<p>格式化 <code>根分区</code>。</p>
+<pre><code class="sh">mkfs.ext4 &lt;根分区设备名&gt;
+</code></pre>
+<p>格式化 <code>swap</code> 分区。</p>
+<pre><code class="sh">mkswap &lt;swap分区设备名&gt;
+</code></pre>
+<h2 id="挂载分区"><a href="#挂载分区" class="headerlink" title="挂载分区"></a>挂载分区</h2><hr>
+<p>将 <code>根分区</code> 挂载到 <code>/mnt目录</code>。</p>
+<pre><code class="sh">mount &lt;根分区设备名&gt; /mnt
+</code></pre>
+<p>将 <code>boot分区</code> 挂载到 <code>/mnt/boot目录</code>。</p>
+<pre><code class="sh">mount --mkdir &lt;boot分区设备名&gt; /mnt/boot
+</code></pre>
+<p>激活 <code>swap</code> 分区。</p>
+<pre><code class="sh">swapon &lt;swap分区设备名&gt;
+</code></pre>
+<h2 id="修改镜像列表"><a href="#修改镜像列表" class="headerlink" title="修改镜像列表"></a>修改镜像列表</h2><hr>
+<p>使用 <code>reflector</code> 来获取速度最快的6个镜像，并将地址保存到 <code>/etc/pacman.d/mirrorlist</code> 文件中。</p>
+<pre><code class="sh">reflector -c China -a 6  --sort rate --save /etc/pacman.d/mirrorlist
+</code></pre>
+<h2 id="安装系统"><a href="#安装系统" class="headerlink" title="安装系统"></a>安装系统</h2><hr>
+<p>安装系统。</p>
+<pre><code class="sh">pacstrap -K /mnt base linux linux-firmware
+</code></pre>
+<p>生成 <code>fstab</code> 文件。</p>
+<pre><code class="sh">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</code></pre>
+<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><hr>
+<pre><code class="sh">arch-chroot /mnt
+</code></pre>
+<h2 id="进入系统后的设置"><a href="#进入系统后的设置" class="headerlink" title="进入系统后的设置"></a>进入系统后的设置</h2><hr>
+<h3 id="修改时区"><a href="#修改时区" class="headerlink" title="修改时区"></a>修改时区</h3><hr>
+<pre><code class="sh">ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+</code></pre>
+<h3 id="同步系统时间"><a href="#同步系统时间" class="headerlink" title="同步系统时间"></a>同步系统时间</h3><hr>
+<pre><code class="sh">hwclock --systohc
+</code></pre>
+<h3 id="本地化设置"><a href="#本地化设置" class="headerlink" title="本地化设置"></a>本地化设置</h3><hr>
+<p>进入系统后没有编辑器，下载需要的编辑器。</p>
+<pre><code class="sh">pacman -S neovim
+</code></pre>
+<p>修改 <code>/etc/locale.gen文件</code> ，去掉 <code>en_US.UTF-8 UTF-8</code> 此行的注释。</p>
+<pre><code class="sh">nvim /etc/locale.gen
+</code></pre>
+<p>再执行 <code>locale-gen</code>。</p>
+<pre><code class="sh">locale-gen
+</code></pre>
+<p>创建 <code>/etc/locale.conf</code> 文件，并在 <code>/etc/locale.conf</code> 文件中添加 <code>LANG=en_US.UTF-8</code>。</p>
+<pre><code class="sh"># 创建并编辑/etc/locale.conf文件
+nvim /etc/locale.conf
+
+# 在此文件中添加以下内容
+LANG=en_US.UTF-8
+</code></pre>
+<h3 id="网络设置"><a href="#网络设置" class="headerlink" title="网络设置"></a>网络设置</h3><hr>
+<p>创建 <code>/etc/hostname</code> 文件，在文件中添加自己的 <code>主机名</code>。</p>
+<pre><code class="sh"># 创建并编辑/etc/hostname文件
+nvim /etc/hostname
+
+# 在此文件中添加自己的主机名
+arch-test
+</code></pre>
+<p>添加 <code>hosts</code>，在 <code>/etc/hosts</code> 文件中添加以下内容：</p>
+<pre><code class="sh">127.0.0.1     localhost
+
+::1           localhost
+
+127.0.1.1     主机名.localdomain 主机名
+</code></pre>
+<h3 id="给root用户添加密码"><a href="#给root用户添加密码" class="headerlink" title="给root用户添加密码"></a>给root用户添加密码</h3><hr>
+<pre><code class="sh">passwd
+</code></pre>
+<h3 id="安装dhcpcd和iwd"><a href="#安装dhcpcd和iwd" class="headerlink" title="安装dhcpcd和iwd"></a>安装dhcpcd和iwd</h3><hr>
+<p><code>dhcpcd</code> 用于新系统动态分配 <code>ip地址</code>。</p>
+<p><code>iwd</code> 用于新系统连接 <code>wifi</code>。</p>
+<pre><code class="sh">pacman -S dhcpcd iwd
+</code></pre>
+<h2 id="安装grub引导"><a href="#安装grub引导" class="headerlink" title="安装grub引导"></a>安装grub引导</h2><hr>
+<p>安装相应软件包。</p>
+<pre><code class="sh">pacman -S grub efibootmgr
+</code></pre>
+<p><code>grub</code> 安装。</p>
+<pre><code class="sh">grub-install --target=x86_64-efi --efi-directory=/boot
+</code></pre>
+<p>生成 <code>grub</code> 的配置文件。</p>
+<pre><code class="sh">grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre>
+<p>根据 <code>cpu</code> 选择安装 <code>intel-ucode</code> 或 <code>amd-ucode</code>。</p>
+<pre><code class="sh">pacman -S intel-ucode
+
+或
+
+pacman -S amd-ucode
+</code></pre>
+<p><code>双系统</code> 需要额外安装 <code>os-prober</code>。</p>
+<pre><code class="sh">pacman -S os-prober
+</code></pre>
+<h2 id="退出系统，取消挂载并重启系统"><a href="#退出系统，取消挂载并重启系统" class="headerlink" title="退出系统，取消挂载并重启系统"></a>退出系统，取消挂载并重启系统</h2><hr>
+<pre><code class="sh"># 退出系统
+exit
+
+# 取消挂载
+umount -R /mnt
+
+# 重启系统
+reboot
+</code></pre>
+<h2 id="重启进入系统后的设置"><a href="#重启进入系统后的设置" class="headerlink" title="重启进入系统后的设置"></a>重启进入系统后的设置</h2><hr>
+<p>启动 <code>dhcpcd</code>。</p>
+<pre><code class="sh">systemctl start dhcpcd
+
+systemctl enable dhcpcd
+</code></pre>
+<p>启动 <code>iwd</code>。</p>
+<pre><code class="sh">systemctl start iwd
+
+systemctl enable iwd
+</code></pre>
+<p>更新系统。</p>
+<pre><code class="sh">pacman -Syyu
+</code></pre>
+<p>安装基础软件包。</p>
+<pre><code class="sh">pacman -S base-devel
+</code></pre>
+<p>添加普通用户。</p>
+<pre><code class="sh">useradd -mG wheel &lt;用户名&gt;
+</code></pre>
+<p>给新用户设置密码。</p>
+<pre><code class="sh">passwd &lt;用户名&gt;
+</code></pre>
+<p>修改 <code>/etc/sudoers</code> 文件。</p>
+<pre><code class="sh">nvim /etc/sudoers
+</code></pre>
+<p>在 <code>/etc/sudoers</code> 文件中放开以下代码的注释就可以使用 <code>sudo</code> 命令。</p>
+<pre><code class="sh"># 放开此行的注释 ↓
+%wheel ALL=(ALL) ALL
+</code></pre>
+
+  </div>
+</article>
+
+      </main>
+
+      <!-- 底部 -->
+      
+  <footer class="flex justify-center items-center gap-x-2 py-4 text-overlay1 text-sm">
+    <a class="underline underline-offset-4 decoration-surface1 hover:decoration-overlay1"
+      target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+    2023-PRESENT
+      <span class="text-sm icon-[charm--copyright]">copyright</span>
+      GIN
+  </footer>
+
+        <!-- 回到顶部 -->
+        <button id="top"
+          class="hidden justify-center items-center fixed bottom-6 right-6 p-3 rounded-full text-surface2 transition duration-200 ease-in hover:text-text hover:bg-crust"
+          title="back to top">
+          <span class="icon-[charm--arrow-up]"></span>
+        </button>
+
+        
+<script src="/js/common.e5cc339d0bc5839f13d5.js"></script>
+<script src="/js/index.8d3c377fa4c8b4e38a33.js"></script>
+<script src="/js/mode.77eee51b081cd2b9821d.js"></script>
+<script src="/js/vendors.4a5f66e331e68bc6d83e.js"></script>
+
+  </body>
+
+</html>
